@@ -1,52 +1,52 @@
-# 🐕 Yelp Veterinary Data Pipeline & NLP Sentiment Mining
+# Yelp Veterinary Data Pipeline and NLP Sentiment Mining
 
-A memory-efficient Data Engineering, Text Preprocessing, and Sentiment Analysis pipeline built to ingest multi-gigabyte datasets, extract niche business insights, and visually isolate industry-specific drivers of customer satisfaction.
+A memory-efficient data engineering, text preprocessing, and sentiment analysis pipeline built to ingest large-scale datasets, extract industry-specific subsets, and isolate structural drivers of customer satisfaction.
 
 ![Sentiment Divergence Chart](tfidf_diverging_chart.png)
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## Technical Stack and Dependencies
 
 * **Language:** Python 3.x
-* **Core Libraries:** `pandas`, `numpy`, `matplotlib`, `regex` (`re`), `nltk`, `scikit-learn`
-* **Environment:** Designed for Kaggle / Jupyter Notebook environments
+* **Core Libraries:** pandas, numpy, matplotlib, re, nltk, scikit-learn
+* **Environment:** Optimized for Kaggle and Jupyter Notebook environments
 
 ---
 
-## ✨ Core Project Architecture
+## Core Project Architecture
 
-* **Memory-Optimized Data Pipeline:** Uses chunked JSON streaming (`chunksize=100000`) to parse and filter millions of rows without triggering Out-Of-Memory (OOM) errors.
-* **Relational ID Slicing:** Leverages Python `set`-based indexing for \(O(1)\) lookups to dynamically extract user interactions (reviews, tips, check-ins) tied to specific businesses.
-* **Custom NLP Text Cleansing:** Normalizes text data by removing noise (punctuation, case, numbers) and stripping standard English and domain-specific stopwords (e.g., *dog*, *cat*, *vet*).
-* **N-Gram TF-IDF Vectorization:** Constructs high-dimensional sparse matrices using unigrams and bigrams (`ngram_range=(1,2)`) to preserve critical phrases like *"wait time"* or *"front desk"*.
+* **Memory-Optimized Data Pipeline:** Utilizes chunked JSON streaming (`chunksize=100000`) to parse and filter millions of rows without triggering Out-Of-Memory (OOM) errors.
+* **Relational ID Slicing:** Leverages high-performance set-based indexing for O(1) lookups to dynamically isolate user interactions (reviews, tips, check-ins) tied directly to targeted businesses.
+* **Text Preprocessing Pipeline:** Normalizes text data by eliminating character noise (punctuation, case, numbers) and removing standard English and domain-specific stopwords.
+* **N-Gram TF-IDF Vectorization:** Constructs high-dimensional sparse matrices using unigrams and bigrams (`ngram_range=(1,2)`) to preserve multi-word context.
 * **Statistical Sentiment Differencing:** Computes a custom mathematical delta vector between average high-star and low-star text reviews.
-* **Diverging Analytical Visualizations:** Generates a custom horizontal bar chart plotting statistical keyword variance to visually distinguish operational pain points from consumer praise.
+* **Analytical Visualizations:** Generates a custom horizontal diverging bar chart plotting statistical keyword variance to isolate operational vulnerabilities from consumer praise.
 
 ---
 
-## 📊 End-to-End Pipeline Workflow
+## End-to-End Pipeline Workflow
 
-### Phase 1: Data Isolation & Ingestion (File 1)
-1. **Target Identification:** Scans the core Yelp business file to isolate entities explicitly categorized under `'Veterinarian'`.
-2. **Relational Extraction:** Uses the unique target IDs to slice secondary datasets (`review.json`, `user.json`, `checkin.json`, `tip.json`), discarding millions of irrelevant rows on-the-fly.
-3. **Structured Storage:** Exports five localized, small-footprint CSV files representing the complete veterinary network.
+### Phase 1: Data Isolation and Ingestion
+1. **Target Identification:** Scans the core Yelp business dataset to isolate entities explicitly categorized under 'Veterinarian'.
+2. **Relational Extraction:** Uses the unique target IDs to slice secondary datasets (`review.json`, `user.json`, `checkin.json`, `tip.json`), filtering out irrelevant entries stream-by-stream.
+3. **Structured Storage:** Exports five localized, small-footprint CSV files representing the targeted business network.
 
-### Phase 2: Feature Engineering & NLP Analytics (File 2)
+### Phase 2: Feature Engineering and NLP Analytics
 4. **Vocabulary Capping:** Instantiates a 5,000-feature `TfidfVectorizer` mapping high-signal unigrams and bigrams.
-5. **Frequency Boundaries:** Implements strict data pruning boundaries (`min_df=3`, `max_df=0.5`) to auto-drop rare typos and ubiquitous words.
-6. **Sentiment Delta Computation:** Splits the dataset into poor (\(\le 2\) stars) and excellent (\(\ge 4\) stars) cohorts, evaluating feature metrics with a custom delta curve:
+5. **Frequency Boundaries:** Implements strict data pruning boundaries (`min_df=3`, `max_df=0.5`) to eliminate rare typographical noise and ubiquitous terms.
+6. **Sentiment Delta Computation:** Splits the dataset into poor (<= 2 stars) and excellent (>= 4 stars) cohorts, evaluating feature metrics with a custom delta curve:
 
 \[\Delta = \text{Mean}_{\text{Low Rating}}(\text{TF-IDF}) - \text{Mean}_{\text{High Rating}}(\text{TF-IDF})\]
 
-### Phase 3: Insight Representation (File 3)
-7. **Vector Alignment:** Sorts the resulting vocabulary matrix by its sentiment delta (\(\Delta\)).
-8. **Diverging Chart Generation:** Plots a dual-color horizontal bar chart map (Red for \(\Delta > 0\) complaints, Blue for \(\Delta < 0\) praise).
-9. **Asset Generation:** Saves high-resolution, presentation-ready visualizations (`tfidf_diverging_chart.png`) directly into the deployment workspace.
+### Phase 3: Analytical Visualization
+7. **Vector Alignment:** Sorts the resulting vocabulary matrix by its sentiment delta (Δ).
+8. **Diverging Chart Generation:** Plots a dual-color horizontal bar chart map to contrast positive and negative sentiment coefficients.
+9. **Asset Generation:** Saves high-resolution, presentation-ready visualizations (`tfidf_diverging_chart.png`) directly to the workspace.
 
 ---
 
-## 🚀 Local Replication & Setup
+## Local Replication and Setup
 
 ### Prerequisites
 Install the required analytical and visualization dependencies:
@@ -55,7 +55,7 @@ pip install pandas numpy matplotlib scikit-learn nltk
 ```
 
 ### Expected Directory Architecture
-Ensure your input files are nested within your working path like this:
+Ensure your input files are nested within your working path as follows:
 ```text
 ├── input/
 │   └── datasets/
@@ -71,7 +71,7 @@ Ensure your input files are nested within your working path like this:
 
 ---
 
-## 📈 Key NLP Metrics & Discoveries
+## Key NLP Metrics and Discoveries
 
-* **Positive Delta ($\Delta > 0$):** Highlights structural, managerial, or operational failure points. These keywords explicitly expose what triggers negative reviews (e.g., long wait times, billing discrepancies, lack of empathy).
+* **Positive Delta ($\Delta > 0$):** Highlights operational, managerial, or structural failure points. These keywords explicitly expose what triggers negative reviews (e.g., long wait times, billing discrepancies).
 * **Negative Delta ($\Delta < 0$):** Isolates key drivers of patient retention and positive reviews, pointing directly to clinical excellence, compassionate staff behaviors, and successful medical outcomes.
