@@ -63,17 +63,24 @@ pip install pandas numpy matplotlib scikit-learn nltk
 ```
 
 ### Expected Directory Architecture
-Ensure your input files are nested within your working path as follows:
+Configure your codebase and input files inside your working environment as follows:
 ```text
 ├── input/
 │   └── datasets/
 │       ├── organizations/yelp-dataset/
 │       │   ├── yelp_academic_dataset_business.json
 │       │   ├── yelp_academic_dataset_review.json
-│       │   └── ... (remaining yelp files)
+│       │   ├── yelp_academic_dataset_user.json
+│       │   ├── yelp_academic_dataset_checkin.json
+│       │   └── yelp_academic_dataset_tip.json
 │       └── micahluftig/stop-words/
 │           └── stop_words.csv
-├── pipeline.py
+├── src/
+│   ├── data_ingestion.py
+│   ├── feature_engineering.py
+│   └── sentiment_visualization.py
+├── .gitignore
+├── README.md
 └── tfidf_diverging_chart.png
 ```
 
