@@ -1,0 +1,4 @@
+# Ignore raw data files and folders
+input/
+*.csv
+*.json
