@@ -76,9 +76,9 @@ Configure your codebase and input files inside your working environment as follo
 │       └── micahluftig/stop-words/
 │           └── stop_words.csv
 ├── src/
-│   ├── data_ingestion.py
-│   ├── feature_engineering.py
-│   └── sentiment_visualization.py
+│   ├── yelp-reviews-data-extraction.ipynb
+│   ├── yelp-reviews-model-preperation.ipynb
+│   └── yelp-reviews-visualization.ipynb
 ├── .gitignore
 ├── README.md
 └── tfidf_diverging_chart.png
