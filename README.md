@@ -48,8 +48,16 @@ A memory-efficient data engineering, text preprocessing, and sentiment analysis 
 
 ## Local Replication and Setup
 
+### Dataset Access
+The raw source data used in this pipeline is hosted on Kaggle. Due to GitHub file size limits and repository hygiene, the raw multi-gigabyte files are excluded from this repository. 
+
+To run or replicate this pipeline:
+1. Authenticate your Kaggle account and navigate to the official [Kaggle Yelp Dataset](https://www.kaggle.com/datasets/yelp-dataset/yelp-dataset) page.
+2. Download the uncompressed source archive containing the five core `yelp_academic_dataset_*.json` files.
+3. Place your raw files into the local workspace using the exact path structure detailed below.
+
 ### Prerequisites
-Install the required analytical and visualization dependencies:
+Install the required data engineering, analytical, and visualization dependencies:
 ```bash
 pip install pandas numpy matplotlib scikit-learn nltk
 ```
