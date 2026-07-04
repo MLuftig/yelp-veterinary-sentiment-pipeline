@@ -43,9 +43,11 @@ This project applies NLP and sentiment analysis to over 33,000 veterinary-specif
 ### Phase 2: Feature Engineering and NLP Analytics
 4. **Vocabulary Capping:** Instantiates a 5,000-feature `TfidfVectorizer` mapping high-signal unigrams and bigrams.
 5. **Frequency Boundaries:** Implements strict data pruning boundaries (`min_df=3`, `max_df=0.5`) to eliminate rare typographical noise and ubiquitous terms.
-6. **Sentiment Delta Computation:** Splits the dataset into poor (<= 2 stars) and excellent (>= 4 stars) cohorts, evaluating feature metrics with a custom delta curve:
+6. **Sentiment Delta Computation:** Splits the dataset into poor (≤ 2 stars) and excellent (≥ 4 stars) cohorts, then computes a delta score for each term:
 
-\[\Delta = \text{Mean}_{\text{Low Rating}}(\text{TF-IDF}) - \text{Mean}_{\text{High Rating}}(\text{TF-IDF})\]
+   `Δ = (avg. TF-IDF score in low-rating reviews) − (avg. TF-IDF score in high-rating reviews)`
+
+   A positive Δ means the term appears more in negative reviews; a negative Δ means it appears more in positive reviews.
 
 ### Phase 3: Analytical Visualization
 7. **Vector Alignment:** Sorts the resulting vocabulary matrix by its sentiment delta (Δ).
