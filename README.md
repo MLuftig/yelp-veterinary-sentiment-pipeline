@@ -6,6 +6,14 @@ A memory-efficient data engineering, text preprocessing, and sentiment analysis 
 
 ---
 
+## Executive Summary
+
+This project applies NLP and sentiment analysis to over 33,000 veterinary-specific reviews extracted from the multi-gigabyte Yelp Open Dataset, using TF-IDF differencing to isolate the specific language that separates satisfied clients from dissatisfied ones.
+
+- **Business Goal:** Give veterinary practices a data-driven view of what actually drives client satisfaction and complaints, beyond star ratings alone.
+- **Key Result:** Billing and communication breakdowns (e.g., terms like "charged," "rude," "told," "money") were the dominant drivers of negative reviews, while staff compassion and expertise ("knowledgeable," "compassionate," "highly recommend") drove positive ones.
+- **Actionable Recommendation:** Practices should prioritize front-desk communication and billing transparency as retention levers — these surfaced as stronger differentiators than clinical outcomes alone.
+
 ## Technical Stack and Dependencies
 
 * **Language:** Python 3.x
