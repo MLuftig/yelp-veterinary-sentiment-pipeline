@@ -8,13 +8,13 @@ A memory-efficient data engineering, text preprocessing, and sentiment analysis 
 
 ## Key Findings
 
-A TF-IDF sentiment-delta analysis of veterinary business reviews reveals a clear split between operational/procedural language and relational/staff-quality language:
+An initial TF-IDF sentiment-delta pass surfaced mostly narrative-scaffolding words (`told`, `said`, `could`, `another`, `still`, `later`) on the negative-review side rather than complaint content — a known artifact of unigram TF-IDF picking up how people structure a story rather than what the story is about. After extending the stopword list to remove narrative-reporting verbs and connectors, the corrected delta analysis surfaces substantially cleaner, higher-signal terms:
 
-**Terms most associated with low-star reviews** (billing and communication friction): `told`, `said`, `money`, `rude`, `asked`, `never`, `call`, `called`, `another`, `could`, `later`, `pay`, `left`, `horrible`, `blood`, `still`, `charged`, `worst`, `business`, `minutes`
+**Terms most associated with low-star reviews** (delta values shown): `told` (0.0351), `money` (0.0175), `rude` (0.0163), `pay` (0.0097), `horrible` (0.0093), `blood` (0.0092), `charged` (0.0089), `worst` (0.0088), `business` (0.0087), `appointment` (0.0085), `phone` (0.0084), `give` (0.0084), `wanted` (0.0082), `bill` (0.0082), `wrong` (0.0081), `hours` (0.0079), `want` (0.0078), `went` (0.0076), `charge` (0.0074), `please` (0.0074)
 
-**Terms most associated with high-star reviews** (staff temperament and care quality): `great`, `love`, `friendly`, `best`, `care`, `highly`, `amazing`, `wonderful`, `thank`, `recommend`, `highly recommend`, `helpful`, `kind`, `knowledgeable`, `compassionate`, `everyone`, `excellent`, `professional`, `happy`, `thorough`
+**Terms most associated with high-star reviews** (delta values shown): `great` (-0.0259), `love` (-0.0177), `friendly` (-0.0174), `best` (-0.0161), `care` (-0.0147), `highly` (-0.0143), `amazing` (-0.0143), `wonderful` (-0.0142), `thank` (-0.0135), `highly recommend` (-0.013), `recommend` (-0.0129), `helpful` (-0.012), `kind` (-0.0119), `knowledgeable` (-0.0107), `compassionate` (-0.0098), `everyone` (-0.0095), `excellent` (-0.0094), `professional` (-0.0092), `happy` (-0.0089), `thorough` (-0.008)
 
-The pattern suggests that negative veterinary reviews cluster around **billing transparency and communication breakdowns** (money, charged, called, asked, pay) rather than clinical outcomes, while positive reviews consistently emphasize **staff compassion and competence** (compassionate, knowledgeable, kind, professional) over any single service or procedure. This points toward front-of-house communication and billing clarity as a higher-leverage area for improving review sentiment than clinical skill alone, which reviewers appear to already trust by default.
+The corrected negative-review list clusters tightly around **billing and administrative friction**: `money`, `pay`, `charged`, `bill`, `charge`, `appointment`, `phone`, `hours`, `business`. `told` remains the single strongest signal by a wide margin — it was deliberately kept in this text rather than filtered, since it also drives a separate rule-based `communication` category flag earlier in the pipeline, and it plausibly reflects genuine content here too (reviewers relaying what staff told them, often in a complaint framing). The high-star list is consistent with the earlier pass and centers on **staff temperament and competence**: `compassionate`, `knowledgeable`, `kind`, `professional`, `thorough`, `helpful`. Together, this points toward front-of-house communication, billing transparency, and appointment/scheduling handling as the highest-leverage areas for improving review sentiment — clinical trust already appears to be a given for reviewers who leave positive feedback.
 
 ---
 
@@ -48,7 +48,7 @@ The pattern suggests that negative veterinary reviews cluster around **billing t
 ### Phase 2: Feature Engineering and NLP Analytics — `yelp-reviews-model-preperation.ipynb`
 
 4. **Vocabulary Capping:** Instantiates a 5,000-feature `TfidfVectorizer` mapping high-signal unigrams and bigrams.
-5. **Frequency Boundaries:** Implements strict data pruning boundaries (`min_df=3`, `max_df=0.5`) to eliminate rare typographical noise and ubiquitous terms.
+5. **Frequency Boundaries:** Implements strict data pruning boundaries (`min_df=3`, `max_df=0.5`) to eliminate rare typographical noise and ubiquitous terms. Stopword filtering was further extended to remove narrative-reporting verbs and connectors (`said`, `asked`, `could`, `another`, `still`, `later`, etc.) that otherwise dominated the low-rating term list without carrying complaint-specific content — an artifact of unigram TF-IDF capturing narrative structure rather than subject matter. `told` was deliberately retained, since a separate rule-based category flag in the extraction phase depends on it.
 6. **Sentiment Delta Computation:** Splits the dataset into poor (<= 2 stars) and excellent (>= 4 stars) cohorts, evaluating feature metrics with a custom delta curve:
 
    Δ = Mean<sub>Low Rating</sub>(TF-IDF) − Mean<sub>High Rating</sub>(TF-IDF)
